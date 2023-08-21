@@ -46,7 +46,7 @@
               <div slot="header" class="card_header">
                 <span>卡片名称</span>
               </div>
-              <molstar />
+              <molstar ref="molPlot" />
             </el-card>
           </el-col>
         </el-row>
@@ -90,6 +90,11 @@
               <div slot="header" class="card_header">
                 <span>卡片名称</span>
               </div>
+              <scatterPlotView
+                @scatterShowMol="scatterShowMol"
+                @scatterShowRadar="scatterShowRadar"
+                ref="scatterPlot"
+              />
             </el-card>
           </el-col>
           <el-col :span="7">
@@ -99,16 +104,16 @@
               </div>
               <div class="card_content">
                 <barPlot
-                v-for="(bar, index) in bars"
-                :bar="bar"
-                @barSlider="barSlider"
-                @barClick="barClick"
-                ref="barPlot"
-                :key="index"
-              />
+                  v-for="(bar, index) in bars"
+                  :bar="bar"
+                  @barSlider="barSlider"
+                  @barClick="barClick"
+                  ref="barPlot"
+                  :key="index"
+                />
                 <!-- <div @drop="addBar" @dragover.prevent > -->
-                    <img src="@/assets/img/addBar.svg" alt="添加数据" />
-                    <img src="@/assets/img/addBar.svg" alt="添加数据" />
+                <img src="@/assets/img/addBar.svg" alt="添加数据" />
+                <img src="@/assets/img/addBar.svg" alt="添加数据" />
                 <!-- </div> -->
               </div>
             </el-card>
@@ -194,7 +199,7 @@
       <div class="right">
         <div class="rightTop">
           <!-- this.$refs.molPlot（组件标签的ref） molplot组件的实例对象VC -->
-          <molPlot ref="molPlot" />
+          <!-- <molPlot ref="molPlot" /> -->
         </div>
         <br />
         <div class="right_bottom">
@@ -473,7 +478,7 @@ header {
   position: relative;
   top: 0;
   right: 0;
-  z-index: 9; 
+  z-index: 9;
   width: 100%;
   max-width: 1500px;
 }
@@ -530,7 +535,7 @@ header {
 .con_bottom {
   width: 100%;
   height: 100%;
-  .bottom_right{
+  .bottom_right {
     width: 100%;
     height: 100%;
   }
@@ -541,7 +546,10 @@ header {
 }
 </style>
 
-<style>
+<style scoped>
+>>>.el-card__body{
+  padding: 5px;
+}
 .main {
   margin: 0 auto;
   /*background: #555555;*/
