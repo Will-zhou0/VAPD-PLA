@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <div id="heatmap" style="width: 500px;height: 250px;">热力图</div>
-    </div>
+        <div ref="heatmap" style="width: 500px;height: 250px;">热力图</div>
 </template>
   
 <script>

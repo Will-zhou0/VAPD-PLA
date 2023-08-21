@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.26.0",
     "bootstrap": "^3.4.1",
+    "echarts": "^5.4.3",
     "element-ui": "^2.15.13",
     "mongodb": "^5.1.0",
     "nanoid": "^4.0.0",
