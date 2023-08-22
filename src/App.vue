@@ -56,7 +56,7 @@
           <el-col :span="5">
             <el-card shadow="hover" class="center_left">
               <div slot="header" class="card_header">
-                <span>卡片名称</span>
+                <span>和弦图</span>
               </div>
               <div class="card_content">
                 <!-- 遍历指定数量的图 -->
@@ -79,7 +79,6 @@
                   @dragover.prevent
                 >
                   <!-- <img src="@/assets/img/add-circle.svg" alt="添加数据" /> -->
-                  <i class="el-icon-circle-plus-outline plus_big"></i>
                   <i class="el-icon-circle-plus-outline plus_big"></i>
                 </div>
               </div>
@@ -112,7 +111,6 @@
                   :key="index"
                 />
                 <!-- <div @drop="addBar" @dragover.prevent > -->
-                <img src="@/assets/img/addBar.svg" alt="添加数据" />
                 <img src="@/assets/img/addBar.svg" alt="添加数据" />
                 <!-- </div> -->
               </div>
@@ -149,10 +147,6 @@
     </div>
     <div class="main">
       <div class="center">
-        <!--        <div class="bor-left-top"></div>-->
-        <!--        <div class="bor-right-top"></div>-->
-        <!--        <div class="bor-left-bottom"></div>-->
-        <!--        <div class="bor-right-bottom"></div>-->
         <div class="center_top">
           <!-- 遍历指定数量的图 -->
           <div class="center_top_child" v-for="(chord, i) in chords" :key="i">
@@ -510,15 +504,24 @@ header {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      .plus_big {
-        font-size: 190px;
-        color: #aaa;
+      height: 450px;
+      overflow: auto;
+      .center_left_child {
+        width: 210px;
+        height: 200px;
+        margin: 3px;
+      }
+      .center_left_add {
+        .plus_big {
+          font-size: 190px;
+          color: #aaa;
+        }
       }
     }
   }
   .center_scatter {
     width: 100%;
-    height: 100%;
+    height: 550px;
   }
   .center_right {
     width: 100%;
@@ -528,6 +531,8 @@ header {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      height: 450px;
+      overflow: auto;
     }
   }
 }
@@ -547,7 +552,7 @@ header {
 </style>
 
 <style scoped>
->>>.el-card__body{
+>>> .el-card__body {
   padding: 5px;
 }
 .main {
