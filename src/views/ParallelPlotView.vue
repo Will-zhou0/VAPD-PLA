@@ -1,8 +1,5 @@
 <template>
-  <div class="com-page">
-    <div id="parallelPlot" ref="parallelPlotRef" @drop="parallelPlotDrop" @dragover.prevent @mousemove="mouseXY">
-
-    </div>
+  <div id="parallelPlot" ref="parallelPlotRef" @drop="parallelPlotDrop" @dragover.prevent @mousemove="mouseXY">
   </div>
 </template>
 
@@ -15,9 +12,9 @@ export default {
   name: "ParallelPlotView",
   data() {
     return {
-      width: 980,       /*  平行坐标图宽度 */
+      width: 720,       /*  平行坐标图宽度 */
       height: 190,      /*  平行坐标图高度 */
-      margin: 40,
+      margin: 10,
       svg: null,   //
       charts: null,  //
 

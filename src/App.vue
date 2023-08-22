@@ -110,9 +110,9 @@
                   ref="barPlot"
                   :key="index"
                 />
-                <!-- <div @drop="addBar" @dragover.prevent > -->
-                <img src="@/assets/img/addBar.svg" alt="添加数据" />
-                <!-- </div> -->
+                <div @drop="addBar" @dragover.prevent >
+                  <img src="@/assets/img/addBar.svg" alt="添加数据" />
+                </div>
               </div>
             </el-card>
           </el-col>
@@ -125,13 +125,17 @@
               <div slot="header" class="card_header">
                 <span>卡片名称</span>
               </div>
-              <parallel></parallel>
+              <parallelPlotView
+                @parallelScatterLinkLine="scatterLinkLine"
+                @parallelShowMol="parallelShowMol"
+                ref="parallelPlot"
+              />
             </el-card>
             <el-card>
               <div slot="header" class="card_header">
                 <span>卡片名称</span>
               </div>
-              <box></box>
+              <boxPlotView />
             </el-card>
           </el-col>
           <el-col :span="12">
@@ -145,93 +149,7 @@
         </el-row>
       </div>
     </div>
-    <div class="main">
-      <div class="center">
-        <div class="center_top">
-          <!-- 遍历指定数量的图 -->
-          <div class="center_top_child" v-for="(chord, i) in chords" :key="i">
-            <chordPlotView
-              @chordScatterLinkLine="scatterLinkLine"
-              :chordID="chord.chordID"
-              :chordData="chord.chordData"
-              :chordColor="chord.chordColor"
-            />
-            <!-- <img src="@/assets/img/cross.svg" alt="移除弦图" /> -->
-          </div>
-          <div
-            class="center_top_add"
-            ref="addChord"
-            @drop="addChord"
-            @dragover.prevent
-          >
-            <img src="@/assets/img/add-circle.svg" alt="添加数据" />
-          </div>
-        </div>
-        <div>
-          <!-- ref 用于表示，相当于原生JS的id this.$refs.div11(原生dom标签的ref) 获取到真实DOM元素 -->
-          <scatterPlotView
-            @scatterShowMol="scatterShowMol"
-            @scatterShowRadar="scatterShowRadar"
-            ref="scatterPlot"
-          />
-        </div>
-        <div class="center_bottom">
-          <el-tabs v-model="activeName">
-            <el-tab-pane label="Parallel" name="first">
-              <parallelPlotView
-                @parallelScatterLinkLine="scatterLinkLine"
-                @parallelShowMol="parallelShowMol"
-                ref="parallelPlot"
-              />
-            </el-tab-pane>
-            <el-tab-pane label="Boxplot" name="second">
-              <boxPlotView />
-            </el-tab-pane>
-          </el-tabs>
-        </div>
-      </div>
-      <div class="right">
-        <div class="rightTop">
-          <!-- this.$refs.molPlot（组件标签的ref） molplot组件的实例对象VC -->
-          <!-- <molPlot ref="molPlot" /> -->
-        </div>
-        <br />
-        <div class="right_bottom">
-          <!--          <div class="bor-left-top"></div>-->
-          <!--          <div class="bor-right-top"></div>-->
-          <!--          <div class="bor-left-bottom"></div>-->
-          <!--          <div class="bor-right-bottom"></div>-->
-          <!-- <el-tabs v-model="activeNameRight">
-            <el-tab-pane label="Bar" name="first">
-              <barPlot v-for="(bar, index) in bars" :bar="bar" @barSlider="barSlider" @barClick="barClick" ref="barPlot"
-                :key="index" />
-              <br>
-              <div class="right_bottom_add" @drop="addBar" @dragover.prevent>
-                <img src="@/assets/img/addBar.svg" alt="添加数据" />
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="Heatmap" name="second">
-              <heatmap ref="heatmap" />
-              <br>
-            </el-tab-pane>
-          </el-tabs> -->
-          <barPlot
-            v-for="(bar, index) in bars"
-            :bar="bar"
-            @barSlider="barSlider"
-            @barClick="barClick"
-            ref="barPlot"
-            :key="index"
-          />
-          <br />
-          <div class="right_bottom_add" @drop="addBar" @dragover.prevent>
-            <img src="@/assets/img/addBar.svg" alt="添加数据" />
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
-  <!--  <router-view/>-->
 </template>
 <script>
 import { nanoid } from "nanoid";
@@ -482,9 +400,6 @@ header {
   display: flex;
   justify-content: space-between;
 }
-/deep/.el-card__header {
-  padding: 5px 20px;
-}
 .card_header {
   display: block;
   font-size: 10px;
@@ -554,153 +469,5 @@ header {
 <style scoped>
 >>> .el-card__body {
   padding: 5px;
-}
-.main {
-  margin: 0 auto;
-  /*background: #555555;*/
-}
-
-.left {
-  width: 230px;
-  height: 500px;
-  float: left;
-  /* TODO */
-  border: 1px solid black;
-  position: relative;
-}
-
-.left-bottom {
-  overflow: auto;
-  /*background-color: #15e3c4;*/
-  border: 1px solid black;
-  width: 100%;
-  height: 456px;
-}
-
-.left-bottom-content {
-  margin: 10px;
-  width: 90%;
-  height: 370px;
-  /*border: 1px red solid;*/
-}
-
-.bor-left-top,
-.bor-left-bottom,
-.bor-right-top,
-.bor-right-bottom {
-  width: 25px;
-  height: 25px;
-  border-style: solid;
-  /* TODO */
-  border-color: black;
-  position: absolute;
-  z-index: 99;
-}
-
-.bor-left-top {
-  border-width: 2px 0 0 2px;
-  left: 0;
-  top: 0;
-}
-
-.bor-left-bottom {
-  border-width: 0 0 2px 2px;
-  left: 0;
-  bottom: 0;
-}
-
-.bor-right-top {
-  border-width: 2px 2px 0 0;
-  right: 0;
-  top: 0;
-}
-
-.bor-right-bottom {
-  border-width: 0 2px 2px 0;
-  right: 0;
-  bottom: 0;
-}
-
-.center {
-  width: 1000px;
-  height: 900px;
-  /*background: #3e9671;*/
-  float: left;
-  /* TODO */
-  /*border: 1px solid black;*/
-  /*border: 1px solid pink;*/
-  position: relative;
-  margin-right: -30px;
-}
-
-.center_top {
-  width: 900px;
-  height: 210px;
-  margin-left: 30px;
-  float: left;
-  overflow: auto;
-}
-
-.center_top_add {
-  width: 210px;
-  height: 200px;
-  margin: 3px;
-  /*margin-right: 3px;*/
-  /*background: green;*/
-  /*border: 1px black solid;*/
-  float: left;
-}
-
-.center_top_child {
-  width: 210px;
-  height: 200px;
-  margin: 3px;
-  /*margin-right: 3px;*/
-  /*background: green;*/
-  float: left;
-}
-
-.center_bottom {
-  width: 980px;
-  height: 190px;
-  /*background: darksalmon;*/
-  margin-left: 40px;
-  float: left;
-}
-
-.right {
-  width: 520px;
-  height: 900px;
-  /*background: #94923c;*/
-  float: right;
-  margin-left: -10px;
-}
-
-/*.right_top {*/
-/*  width: 520px;*/
-/*  height: 650px;*/
-/*  background: #555555;*/
-/*}*/
-
-.right_bottom {
-  width: 520px;
-  height: 410px;
-  /*background: rgb(224, 147, 147);*/
-  overflow-y: auto;
-  overflow-x: hidden;
-  /* TODO */
-  /*border: 1px solid pink;*/
-  /*border: 1px solid black;*/
-  position: relative;
-  /*overflow: hidden;*/
-}
-
-.right_bottom_add {
-  width: 500px;
-  height: 200px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
