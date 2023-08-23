@@ -1,8 +1,6 @@
 <template>
-  <div class="com-page" style="z-index:99">
-    <div id="boxPlot" ref="boxPlotRef" @drop="boxPlotDrop" @dragover.prevent @mousemove="mouseXY"
-      style="width: 880px;height: 190px;"></div>
-  </div>
+  <div id="boxPlot" ref="boxPlotRef" @drop="boxPlotDrop" @dragover.prevent @mousemove="mouseXY"
+    style="width: 100%;height: 190px;"></div>
 </template>
 
 <script>

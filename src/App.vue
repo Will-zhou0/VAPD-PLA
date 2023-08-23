@@ -1,136 +1,155 @@
 <template>
-  <div>
+  <div class="app">
     <div class="header">
       <header>
         <h2>Visual Analysis of Protein Pocket Dynamics</h2>
       </header>
     </div>
-    <div class="main">
-      <div class="left">
-        <!--        <div class="bor-left-top"></div>-->
-        <!--        <div class="bor-right-top"></div>-->
-        <!--        <div class="bor-left-bottom"></div>-->
-        <!--        <div class="bor-right-bottom"></div>-->
-        <div class="addCluster com-page left flex-shrink-0 p-3 bg-white" onselectstart="return false;" ref="addCluster"
-          unselectable="on" @dragover.prevent @drop="clusterDrop">
-          <!--          <span class="fs-3 fw-semibold"></span>-->
-          <ul id="chordUL" class="btn-toggle-nav list-unstyled fw-normal pb-1">
-            <clusterPlotView v-for="(cluster, index) in clusters" :cluster="cluster" :key="index" />
-          </ul>
-        </div>
-        <div class="left-bottom">
-          <div class="left-bottom-content">
-            <div>
-              <h4>Protein Annotations</h4>
-              &nbsp;&nbsp;PDB ENTY：<input type="text" value="4E46" style="width: 60px">
-            </div>
-            <div>
-              <h4>PDB INFO</h4>
-              Released:<br />
-              &nbsp;&nbsp;2013-03-13
-              <br /><br />
-              Method:
-              <br />
-              &nbsp;&nbsp;XRAY DIFFRACTION 1.26 Å
-              <br /><br />
-              Unique Ligands:
-              <br />
-              &nbsp;&nbsp;ACT,CL,IPA
-            </div>
-          </div>
-        </div>
+    <div class="container">
+      <div>
+        <el-row :gutter="5" class="con_top">
+          <el-col :span="5">
+            <el-card shadow="hover">
+              <div>
+                <h4>Protein Annotations</h4>
+                &nbsp;&nbsp;PDB ENTY：<input
+                  type="text"
+                  value="4E46"
+                  style="width: 60px"
+                />
+              </div>
+              <div>
+                <h4>PDB INFO</h4>
+                Released:<br />
+                &nbsp;&nbsp;2013-03-13
+                <br /><br />
+                Method:
+                <br />
+                &nbsp;&nbsp;XRAY DIFFRACTION 1.26 Å
+                <br /><br />
+                Unique Ligands:
+                <br />
+                &nbsp;&nbsp;ACT,CL,IPA
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="12">
+            <el-card shadow="hover">
+              <div slot="header" class="card_header">
+                <span>卡片名称</span>
+              </div>
+              <heatmap />
+            </el-card>
+          </el-col>
+          <el-col :span="7">
+            <el-card shadow="hover">
+              <div slot="header" class="card_header">
+                <span>卡片名称</span>
+              </div>
+              <molstar ref="molPlot" />
+            </el-card>
+          </el-col>
+        </el-row>
       </div>
-      <div class="center">
-        <!--        <div class="bor-left-top"></div>-->
-        <!--        <div class="bor-right-top"></div>-->
-        <!--        <div class="bor-left-bottom"></div>-->
-        <!--        <div class="bor-right-bottom"></div>-->
-        <div class="center_top">
-          <!-- 遍历指定数量的图 -->
-          <div class="center_top_child" v-for="(chord, i) in chords" :key="i">
-            <chordPlotView @chordScatterLinkLine="scatterLinkLine" :chordID="chord.chordID" :chordData="chord.chordData"
-              :chordColor="chord.chordColor" />
-            <!-- <img src="@/assets/img/cross.svg" alt="移除弦图" /> -->
-          </div>
-          <div class="center_top_add" ref="addChord" @drop="addChord" @dragover.prevent>
-            <img src="@/assets/img/add-circle.svg" alt="添加数据" />
-          </div>
-        </div>
-        <div>
-          <!-- ref 用于表示，相当于原生JS的id this.$refs.div11(原生dom标签的ref) 获取到真实DOM元素 -->
-          <scatterPlotView @scatterShowMol="scatterShowMol" @scatterShowRadar="scatterShowRadar" ref="scatterPlot" />
-        </div>
-        <div class="center_bottom">
-
-          <el-tabs v-model="activeName">
-            <el-tab-pane label="Parallel" name="first">
-              <parallelPlotView @parallelScatterLinkLine="scatterLinkLine" @parallelShowMol="parallelShowMol"
-                ref="parallelPlot" />
-            </el-tab-pane>
-            <el-tab-pane label="Boxplot" name="second">
+      <div>
+        <el-row :gutter="5" class="con_center">
+          <el-col :span="5">
+            <el-card shadow="hover" class="center_left">
+              <div slot="header" class="card_header">
+                <span>和弦图</span>
+              </div>
+              <div class="card_content">
+                <!-- 遍历指定数量的图 -->
+                <div
+                  class="center_left_child"
+                  v-for="(chord, i) in chords"
+                  :key="i"
+                >
+                  <chordPlotView
+                    @chordScatterLinkLine="scatterLinkLine"
+                    :chordID="chord.chordID"
+                    :chordData="chord.chordData"
+                    :chordColor="chord.chordColor"
+                  />
+                </div>
+                <div
+                  class="center_left_add"
+                  ref="addChord"
+                  @drop="addChord"
+                  @dragover.prevent
+                >
+                  <!-- <img src="@/assets/img/add-circle.svg" alt="添加数据" /> -->
+                  <i class="el-icon-circle-plus-outline plus_big"></i>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="12">
+            <el-card shadow="hover" class="center_scatter">
+              <div slot="header" class="card_header">
+                <span>卡片名称</span>
+              </div>
+              <scatterPlotView
+                @scatterShowMol="scatterShowMol"
+                @scatterShowRadar="scatterShowRadar"
+                ref="scatterPlot"
+              />
+            </el-card>
+          </el-col>
+          <el-col :span="7">
+            <el-card shadow="hover" class="center_right">
+              <div slot="header" class="card_header">
+                <span>卡片名称</span>
+              </div>
+              <div class="card_content">
+                <barPlot
+                  v-for="(bar, index) in bars"
+                  :bar="bar"
+                  @barSlider="barSlider"
+                  @barClick="barClick"
+                  ref="barPlot"
+                  :key="index"
+                />
+                <div @drop="addBar" @dragover.prevent >
+                  <img src="@/assets/img/addBar.svg" alt="添加数据" />
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      </div>
+      <div>
+        <el-row :gutter="5" class="con_bottom">
+          <el-col :span="12">
+            <el-card>
+              <div slot="header" class="card_header">
+                <span>卡片名称</span>
+              </div>
+              <parallelPlotView
+                @parallelScatterLinkLine="scatterLinkLine"
+                @parallelShowMol="parallelShowMol"
+                ref="parallelPlot"
+              />
+            </el-card>
+            <el-card>
+              <div slot="header" class="card_header">
+                <span>卡片名称</span>
+              </div>
               <boxPlotView />
-            </el-tab-pane>
-          </el-tabs>
-
-        </div>
-      </div>
-      <div class="right">
-        <div class="rightTop">
-          <!-- this.$refs.molPlot（组件标签的ref） molplot组件的实例对象VC -->
-          <molPlot ref="molPlot" />
-        </div>
-        <br>
-        <div class="right_bottom">
-          <!--          <div class="bor-left-top"></div>-->
-          <!--          <div class="bor-right-top"></div>-->
-          <!--          <div class="bor-left-bottom"></div>-->
-          <!--          <div class="bor-right-bottom"></div>-->
-          <!-- <el-tabs v-model="activeNameRight">
-            <el-tab-pane label="Bar" name="first">
-              <barPlot v-for="(bar, index) in bars" :bar="bar" @barSlider="barSlider" @barClick="barClick" ref="barPlot"
-                :key="index" />
-              <br>
-              <div class="right_bottom_add" @drop="addBar" @dragover.prevent>
-                <img src="@/assets/img/addBar.svg" alt="添加数据" />
+            </el-card>
+          </el-col>
+          <el-col :span="12">
+            <el-card class="bottom_right">
+              <div slot="header" class="card_header">
+                <span>卡片名称</span>
               </div>
-            </el-tab-pane>
-            <el-tab-pane label="Heatmap" name="second">
-              <heatmap ref="heatmap" />
-              <br>
-            </el-tab-pane>
-          </el-tabs> -->
-          <barPlot v-for="(bar, index) in bars" :bar="bar" @barSlider="barSlider" @barClick="barClick" ref="barPlot"
-            :key="index" />
-          <br>
-          <div class="right_bottom_add" @drop="addBar" @dragover.prevent>
-            <img src="@/assets/img/addBar.svg" alt="添加数据" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 模态框显示 -->
-    <div class="modal fade" id="appModalDIV" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="modalInput" class="col-form-label">Please enter the list name</label>
-                <input type="text" autofocus class="form-control" id="modalInput" />
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary app" id="appModalSubmit">
-              确定
-            </button>
-          </div>
-        </div>
+              <singleAxisScatter></singleAxisScatter>
+            </el-card>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </div>
-
-  <!--  <router-view/>-->
 </template>
 <script>
 import { nanoid } from "nanoid";
@@ -228,8 +247,8 @@ export default {
       dropData: [],
       classes: [],
       bars: [], // 柱状图信息
-      activeName: 'first', // 中间底部的tab默认项
-      activeNameRight: 'first', // 右侧底部的tab默认项
+      activeName: "first", // 中间底部的tab默认项
+      activeNameRight: "first", // 右侧底部的tab默认项
     };
   },
   mounted() {
@@ -252,12 +271,12 @@ export default {
     molPlot: () => import("./views/MolPlotView"),
     barPlot: () => import("./views/BarPlotView"),
     heatmap: () => import("./views/Heatmap"),
-  },
-  created() {
-    // 读取信息
-  },
-  beforeDestroy() {
-    // 存储信息
+    // heatmap: () => import("@/components/heatmap"),
+    molstar: () => import("@/components/molstar"),
+    chord: () => import("@/components/chord"),
+    parallel: () => import("@/components/parallel"),
+    box: () => import("@/components/box"),
+    singleAxisScatter: () => import("@/components/singleAxisScatter"),
   },
   methods: {
     addChord(e) {
@@ -315,8 +334,8 @@ export default {
     },
     // 绘制雷达图
     scatterShowRadar(node) {
-      console.log('展示雷达图', node);
-      this.$refs.radarChart.radarClick(node)
+      console.log("展示雷达图", node);
+      this.$refs.radarChart.radarClick(node);
     },
 
     addBar(e) {
@@ -349,7 +368,7 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="less">
 svg {
   border: 1px solid rgba(31, 31, 31, 0.99);
 }
@@ -357,174 +376,98 @@ svg {
 * {
   margin: 0;
 }
-
+.app {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
 header {
   text-align: center;
   line-height: normal;
+}
+.container {
+  /* height: 100%; */
+  position: relative;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: 100%;
+  max-width: 1500px;
+}
+.con_top {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.card_header {
+  display: block;
+  font-size: 10px;
+  // height: 7px;
+}
+
+.con_center {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  .center_left {
+    width: 100%;
+    height: 100%;
+    .card_content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 450px;
+      overflow: auto;
+      .center_left_child {
+        width: 210px;
+        height: 200px;
+        margin: 3px;
+      }
+      .center_left_add {
+        .plus_big {
+          font-size: 190px;
+          color: #aaa;
+        }
+      }
+    }
+  }
+  .center_scatter {
+    width: 100%;
+    height: 550px;
+  }
+  .center_right {
+    width: 100%;
+    height: 100%;
+    .card_content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 450px;
+      overflow: auto;
+    }
+  }
+}
+
+.con_bottom {
+  width: 100%;
+  height: 100%;
+  .bottom_right {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .addCluster {
   overflow: auto;
 }
+</style>
 
-.main {
-  width: 1720px;
-  height: 900px;
-  margin: 0 auto;
-  /*background: #555555;*/
-}
-
-.left {
-  width: 230px;
-  height: 500px;
-  float: left;
-  /* TODO */
-  border: 1px solid black;
-  position: relative;
-}
-
-.left-bottom {
-  overflow: auto;
-  /*background-color: #15e3c4;*/
-  border: 1px solid black;
-  width: 100%;
-  height: 456px
-}
-
-.left-bottom-content {
-  margin: 10px;
-  width: 90%;
-  height: 370px;
-  /*border: 1px red solid;*/
-}
-
-
-.bor-left-top,
-.bor-left-bottom,
-.bor-right-top,
-.bor-right-bottom {
-  width: 25px;
-  height: 25px;
-  border-style: solid;
-  /* TODO */
-  border-color: black;
-  position: absolute;
-  z-index: 99;
-}
-
-.bor-left-top {
-  border-width: 2px 0 0 2px;
-  left: 0;
-  top: 0;
-}
-
-.bor-left-bottom {
-  border-width: 0 0 2px 2px;
-  left: 0;
-  bottom: 0;
-}
-
-.bor-right-top {
-  border-width: 2px 2px 0 0;
-  right: 0;
-  top: 0;
-}
-
-.bor-right-bottom {
-  border-width: 0 2px 2px 0;
-  right: 0;
-  bottom: 0;
-}
-
-.center {
-  width: 1000px;
-  height: 900px;
-  /*background: #3e9671;*/
-  float: left;
-  /* TODO */
-  /*border: 1px solid black;*/
-  /*border: 1px solid pink;*/
-  position: relative;
-  margin-right: -30px;
-}
-
-.center_top {
-  width: 900px;
-  height: 210px;
-  margin-left: 30px;
-  float: left;
-  overflow: auto;
-}
-
-.center_top_add {
-  width: 210px;
-  height: 200px;
-  margin: 3px;
-  /*margin-right: 3px;*/
-  /*background: green;*/
-  /*border: 1px black solid;*/
-  float: left;
-}
-
-.center_top_child {
-  width: 210px;
-  height: 200px;
-  margin: 3px;
-  /*margin-right: 3px;*/
-  /*background: green;*/
-  float: left;
-}
-
-/*.center_center {*/
-/*  width: 900px;*/
-/*  height: 500px;*/
-/*  !*background: lightblue;*!*/
-/*  margin-left: 65px;;*/
-/*  float: left;*/
-/*}*/
-
-.center_bottom {
-  width: 980px;
-  height: 190px;
-  /*background: darksalmon;*/
-  margin-left: 40px;
-  float: left;
-}
-
-.right {
-  width: 520px;
-  height: 900px;
-  /*background: #94923c;*/
-  float: right;
-  margin-left: -10px
-}
-
-/*.right_top {*/
-/*  width: 520px;*/
-/*  height: 650px;*/
-/*  background: #555555;*/
-/*}*/
-
-.right_bottom {
-  width: 520px;
-  height: 410px;
-  /*background: rgb(224, 147, 147);*/
-  overflow-y: auto;
-  overflow-x: hidden;
-  /* TODO */
-  /*border: 1px solid pink;*/
-  /*border: 1px solid black;*/
-  position: relative;
-  /*overflow: hidden;*/
-}
-
-.right_bottom_add {
-  width: 500px;
-  height: 200px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
+<style scoped>
+>>> .el-card__body {
+  padding: 5px;
 }
 </style>
