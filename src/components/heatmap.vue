@@ -30,8 +30,8 @@ export default {
         position: "top",
       },
       grid: {
-        height: "50%",
-        top: "10%",
+        height: "80%",
+        top: "5%",
       },
       xAxis: {
         type: "category",
@@ -51,9 +51,11 @@ export default {
         min: 0,
         max: 10,
         calculable: true,
-        orient: "horizontal",
-        left: "center",
-        bottom: "15%",
+        orient: "vertical",
+        top: "10%",
+        right: "2%",
+        text:['High','Low'],
+        precision: 2 ,
       },
       series: [
         {

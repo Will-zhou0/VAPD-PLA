@@ -270,8 +270,8 @@ export default {
     radarChart: () => import("./views/RadarChart"), // 雷达图
     molPlot: () => import("./views/MolPlotView"),
     barPlot: () => import("./views/BarPlotView"),
-    // heatmap: () => import("./views/Heatmap"),
-    heatmap: () => import("@/components/heatmap"),
+    heatmap: () => import("./views/Heatmap"),
+    // heatmap: () => import("@/components/heatmap"),
     molstar: () => import("@/components/molstar"),
     chord: () => import("@/components/chord"),
     parallel: () => import("@/components/parallel"),
