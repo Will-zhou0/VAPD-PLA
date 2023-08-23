@@ -8,7 +8,7 @@
     <div class="container">
       <div>
         <el-row :gutter="5" class="con_top">
-          <el-col :span="5">
+          <el-col :span="4">
             <el-card shadow="hover">
               <div>
                 <h4>Protein Annotations</h4>
@@ -41,7 +41,7 @@
               <heatmap />
             </el-card>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-card shadow="hover">
               <div slot="header" class="card_header">
                 <span>卡片名称</span>
@@ -53,7 +53,7 @@
       </div>
       <div>
         <el-row :gutter="5" class="con_center">
-          <el-col :span="5">
+          <el-col :span="4">
             <el-card shadow="hover" class="center_left">
               <div slot="header" class="card_header">
                 <span>和弦图</span>
@@ -96,7 +96,7 @@
               />
             </el-card>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-card shadow="hover" class="center_right">
               <div slot="header" class="card_header">
                 <span>卡片名称</span>
@@ -110,7 +110,7 @@
                   ref="barPlot"
                   :key="index"
                 />
-                <div @drop="addBar" @dragover.prevent >
+                <div @drop="addBar" @dragover.prevent>
                   <img src="@/assets/img/addBar.svg" alt="添加数据" />
                 </div>
               </div>
