@@ -26,11 +26,8 @@ export default {
   name: "Heatmap",
   data() {
     return {
-      charts: null, //
-      pocketData: [], // 请求数据
-      frameData: [],
-      arrs: [],
-      similarityArrs: [],
+      pocketData: [], // 请求的口袋参数
+      similarityArrs: [], // 返回的相似度数组
     };
   },
   mounted() {
@@ -190,7 +187,7 @@ export default {
         .getData("framePocket")
         .trim()
         .split(",");
-      this.initRequire();
+      this.initData();
     },
 
     mouseXY(e) {

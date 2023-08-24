@@ -139,12 +139,7 @@
             </el-card>
           </el-col>
           <el-col :span="12">
-            <el-card class="bottom_right">
-              <div slot="header" class="card_header">
-                <span>卡片名称</span>
-              </div>
-              <singleAxisScatter></singleAxisScatter>
-            </el-card>
+            <singleAxisScatter></singleAxisScatter>
           </el-col>
         </el-row>
       </div>

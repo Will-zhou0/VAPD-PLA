@@ -1,5 +1,31 @@
 <template>
-  <div class="chart" ref="singleAxisScatter"></div>
+  <el-card class="bottom_right">
+    <div slot="header" class="card_header">
+      <span>单轴散点图</span>
+      <el-dropdown :hide-on-click="false" style="float: right;">
+        <span class="el-dropdown-link">
+          添加其他属性<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
+            <el-checkbox v-model="checked.polar" @change="addPolar">极性</el-checkbox>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-checkbox v-model="checked.polar">备选项</el-checkbox>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-checkbox v-model="checked.polar">备选项</el-checkbox>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+    <div
+      ref="singleAxisScatter"
+      style="width: 100%; height: 400px"
+      @dragover.prevent
+      @drop="singleAxisDrop"
+    ></div>
+  </el-card>
 </template>
 
 <script>
@@ -7,75 +33,215 @@ import * as echarts from "echarts";
 export default {
   name: "SingleAxisScattert",
   data() {
-    return {};
+    return {
+      checked: {
+        polar: false,
+      },
+      // 需要获取属性的相关口袋
+      pocketData: ["1_1", "2_4", "3_3", "4_6", "4_11", "5_4", "6_3"],
+      attrValueData: {
+        volume: [
+          [0, 5],
+          [1, 1],
+          [2, 0],
+          [3, 0],
+          [4, 0],
+          [5, 0],
+          [6, 0],
+          [11, 2],
+          [12, 4],
+          [13, 1],
+          [14, 1],
+          [15, 3],
+          [16, 4],
+          [17, 6],
+          [18, 4],
+          [19, 4],
+          [20, 3],
+          [21, 3],
+          [22, 2],
+          [23, 5],
+        ],
+        dis: [
+          [0, 5],
+          [1, 1],
+          [2, 0],
+          [3, 0],
+          [4, 0],
+          [5, 0],
+          [6, 0],
+          [11, 2],
+          [12, 4],
+          [13, 1],
+          [14, 1],
+          [15, 3],
+          [16, 4],
+          [17, 6],
+          [18, 4],
+          [19, 4],
+          [20, 3],
+          [21, 3],
+          [22, 2],
+          [23, 5],
+        ],
+        polar: [
+          [0, 5],
+          [1, 1],
+          [2, 0],
+          [3, 0],
+          [4, 0],
+          [5, 0],
+          [6, 0],
+          [11, 2],
+          [12, 4],
+          [13, 1],
+          [14, 1],
+          [15, 3],
+          [16, 4],
+          [17, 6],
+          [18, 4],
+          [19, 4],
+          [20, 3],
+          [21, 3],
+          [22, 2],
+          [23, 5],
+        ],
+      }, // 返回的属性列表
+      attrNameList: ["volume", "dis"], // 返回的属性值数据
+    };
   },
   mounted() {
-    const parallel = echarts.init(this.$refs.singleAxisScatter);
-    // prettier-ignore
-    const hours = [
-    '12a', '1a', '2a', '3a', '4a', '5a', '6a',
-    '7a', '8a', '9a', '10a', '11a',
-    '12p', '1p', '2p', '3p', '4p', '5p',
-    '6p', '7p', '8p', '9p', '10p', '11p'
-];
-    // prettier-ignore
-    const days = [
-    'Saturday', 'Friday', 'Thursday',
-    'Wednesday', 'Tuesday', 'Monday', 'Sunday'
-];
-    // prettier-ignore
-    const data = [[0, 0, 5], [0, 1, 1], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0], [0, 6, 0], [0, 7, 0], [0, 8, 0], [0, 9, 0], [0, 10, 0], [0, 11, 2], [0, 12, 4], [0, 13, 1], [0, 14, 1], [0, 15, 3], [0, 16, 4], [0, 17, 6], [0, 18, 4], [0, 19, 4], [0, 20, 3], [0, 21, 3], [0, 22, 2], [0, 23, 5], [1, 0, 7], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0], [1, 6, 0], [1, 7, 0], [1, 8, 0], [1, 9, 0], [1, 10, 5], [1, 11, 2], [1, 12, 2], [1, 13, 6], [1, 14, 9], [1, 15, 11], [1, 16, 6], [1, 17, 7], [1, 18, 8], [1, 19, 12], [1, 20, 5], [1, 21, 5], [1, 22, 7], [1, 23, 2], [2, 0, 1], [2, 1, 1], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0], [2, 6, 0], [2, 7, 0], [2, 8, 0], [2, 9, 0], [2, 10, 3], [2, 11, 2], [2, 12, 1], [2, 13, 9], [2, 14, 8], [2, 15, 10], [2, 16, 6], [2, 17, 5], [2, 18, 5], [2, 19, 5], [2, 20, 7], [2, 21, 4], [2, 22, 2], [2, 23, 4], [3, 0, 7], [3, 1, 3], [3, 2, 0], [3, 3, 0], [3, 4, 0], [3, 5, 0], [3, 6, 0], [3, 7, 0], [3, 8, 1], [3, 9, 0], [3, 10, 5], [3, 11, 4], [3, 12, 7], [3, 13, 14], [3, 14, 13], [3, 15, 12], [3, 16, 9], [3, 17, 5], [3, 18, 5], [3, 19, 10], [3, 20, 6], [3, 21, 4], [3, 22, 4], [3, 23, 1], [4, 0, 1], [4, 1, 3], [4, 2, 0], [4, 3, 0], [4, 4, 0], [4, 5, 1], [4, 6, 0], [4, 7, 0], [4, 8, 0], [4, 9, 2], [4, 10, 4], [4, 11, 4], [4, 12, 2], [4, 13, 4], [4, 14, 4], [4, 15, 14], [4, 16, 12], [4, 17, 1], [4, 18, 8], [4, 19, 5], [4, 20, 3], [4, 21, 7], [4, 22, 3], [4, 23, 0], [5, 0, 2], [5, 1, 1], [5, 2, 0], [5, 3, 3], [5, 4, 0], [5, 5, 0], [5, 6, 0], [5, 7, 0], [5, 8, 2], [5, 9, 0], [5, 10, 4], [5, 11, 1], [5, 12, 5], [5, 13, 10], [5, 14, 5], [5, 15, 7], [5, 16, 11], [5, 17, 6], [5, 18, 0], [5, 19, 5], [5, 20, 3], [5, 21, 4], [5, 22, 2], [5, 23, 0], [6, 0, 1], [6, 1, 0], [6, 2, 0], [6, 3, 0], [6, 4, 0], [6, 5, 0], [6, 6, 0], [6, 7, 0], [6, 8, 0], [6, 9, 0], [6, 10, 1], [6, 11, 0], [6, 12, 2], [6, 13, 1], [6, 14, 3], [6, 15, 4], [6, 16, 0], [6, 17, 0], [6, 18, 0], [6, 19, 0], [6, 20, 1], [6, 21, 2], [6, 22, 2], [6, 23, 6]];
-    const title = [];
-    const singleAxis = [];
-    const series = [];
-    days.forEach(function (day, idx) {
-      title.push({
-        textBaseline: "middle",
-        top: ((idx + 0.5) * 100) / 7 + "%",
-        text: day,
-      });
-      singleAxis.push({
-        left: 150,
-        type: "category",
-        boundaryGap: false,
-        data: hours,
-        top: (idx * 100) / 7 + 5 + "%",
-        height: 100 / 7 - 10 + "%",
-        axisLabel: {
-          interval: 2,
-        },
-      });
-      series.push({
-        singleAxisIndex: idx,
-        coordinateSystem: "singleAxis",
-        type: "scatter",
-        data: [],
-        symbolSize: function (dataItem) {
-          return dataItem[1] * 4;
-        },
-      });
-    });
-    data.forEach(function (dataItem) {
-      series[dataItem[0]].data.push([dataItem[1], dataItem[2]]);
-    });
-    const option = {
-      tooltip: {
-        position: "top",
-      },
-      title: title,
-      singleAxis: singleAxis,
-      series: series,
-    };
-    parallel.setOption(option);
+    // this.initData();
+    this.myCharts();
   },
-  methods: {},
+  methods: {
+    async initData() {
+      await request({
+        url: "/singleAxis/index",
+        method: "POST",
+        data: { frame_pocket: this.pocketData },
+      })
+        .then((res) => {
+          if (res.status === 200) {
+            this.attrValueData = res.data["attr"];
+            this.myEcharts();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    myCharts() {
+      const singleAxisChart = echarts.init(this.$refs.singleAxisScatter);
+      const frames = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+        "35",
+        "36",
+        "37",
+      ];
+      // const data = [[0, 5], [1, 1], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [11, 2], [12, 4], [13, 1], [14, 1], [15, 3], [16, 4], [17, 6], [18, 4], [19, 4], [20, 3], [21, 3], [22, 2], [23, 5]]
+      const title = [];
+      const singleAxis = [];
+      const series = [];
+      let len = this.attrNameList.length;
+      this.attrNameList.forEach(function (attrName, idx) {
+        title.push({
+          textBaseline: "middle",
+          top: ((idx + 0.5) * 100) / len + "%",
+          text: attrName,
+        });
+        singleAxis.push({
+          left: 50,
+          type: "category",
+          boundaryGap: false,
+          data: frames,
+          top: (idx * 100) / len + 5 + "%",
+          height: 100 / len - 10 + "%",
+          axisLabel: {
+            interval: 2,
+          },
+        });
+        series.push({
+          singleAxisIndex: idx,
+          coordinateSystem: "singleAxis",
+          type: "scatter",
+          data: [],
+          symbolSize: function (dataItem) {
+            return dataItem[1] * 4;
+          },
+        });
+      });
+      for (let i = 0; i < this.attrNameList.length; i++) {
+        series[i].data = this.attrValueData[this.attrNameList[i]];
+      }
+      // this.attrValueData.volume.forEach(function (dataItem) {
+      //   series[0].data.push([dataItem[0], dataItem[1]]);
+      // });
+      // this.attrValueData.dis.forEach(function (dataItem) {
+      //   series[1].data.push([dataItem[0], dataItem[1]]);
+      // });
+      const option = {
+        tooltip: {
+          position: "top",
+        },
+        title: title,
+        singleAxis: singleAxis,
+        series: series,
+      };
+      singleAxisChart.setOption(option);
+    },
+    singleAxisDrop(event) {
+      this.pocketData = event.dataTransfer
+        .getData("framePocket")
+        .trim()
+        .split(",");
+      this.initData();
+    },
+    addPolar() {
+      if(this.checked.polar == true){
+        console.log("addPolar");
+        this.attrNameList.push("polar");
+        this.myCharts();
+      }else{
+        console.log('removePolar');
+      }
+    },
+  },
   components: {},
 };
 </script>
 
-<style scoped>
-.chart {
-  width: 100%;
-  height: 500px;
-}
-</style>
+<style scoped></style>
