@@ -1,7 +1,7 @@
 <template>
   <div
     ref="heatmap"
-    style="width: 100%; height: 300px"
+    style="width: 100%; height: 350px"
     @dragover.prevent
     @drop="heatmapDrop"
   >
@@ -21,6 +21,16 @@ let heatmap_frame_pocket = [
   "5_4",
   "6_3",
   "7_2",
+  "20_1",
+  "86_1",
+  "13_9",
+  "21_4",
+  "37_6",
+  "12_4",
+  "19_5",
+  "54_5",
+  "95_5",
+  "97_6",
 ];
 export default {
   name: "Heatmap",
@@ -32,73 +42,6 @@ export default {
   },
   mounted() {
     this.pocketData = heatmap_frame_pocket;
-    // this.initData();
-    this.similarityArrs = [
-      ["1_1", "1_1", 1],
-      ["1_1", "2_4", 0.2],
-      ["1_1", 3, 0.5],
-      ["1_1", 4, 0.8],
-      ["1_1", 5, 0.1],
-      ["1_1", 6, 0.7],
-      ["1_1", 7, 0.1],
-      ["1_1", 8, 0.1],
-      ["2_4", 1, 0.4],
-      ["2_4", "2_4", 1],
-      ["2_4", 3, 0.1],
-      ["2_4", 4, 0.2],
-      [2, 5, 0.3],
-      [2, 6, 0.4],
-      [2, 7, 0.1],
-      [2, 8, 0.1],
-      [3, 1, 0.1],
-      [3, "2_4", 0.2],
-      [3, 3, 1],
-      [3, 4, 0.4],
-      [3, 5, 0.5],
-      [3, 6, 0.6],
-      [3, 7, 0.8],
-      [3, 8, 0.8],
-      [4, 1, 0.4],
-      [4, 2, 0.2],
-      [4, 3, 0.3],
-      [4, 4, 1],
-      [4, 5, 0.5],
-      [4, 6, 0.6],
-      [4, 7, 0.8],
-      [4, 8, 0.8],
-      [5, 1, 0.1],
-      [5, 2, 0.2],
-      [5, 3, 0.3],
-      [5, 4, 0.4],
-      [5, 5, 1],
-      [5, 6, 0.6],
-      [5, 7, 0.8],
-      [5, 8, 0.8],
-      [6, 1, 0.1],
-      [6, 2, 0.2],
-      [6, 3, 0.3],
-      [6, 4, 0.4],
-      [6, 5, 0.5],
-      [6, 6, 1],
-      [6, 7, 0.8],
-      [6, 8, 0.8],
-      [7, 1, 0.1],
-      [7, 2, 0.2],
-      [7, 3, 0.3],
-      [7, 4, 0.4],
-      [7, 5, 0.5],
-      [7, 6, 0.6],
-      [7, 7, 1],
-      [7, 8, 0.8],
-      [8, 1, 0.1],
-      [8, 2, 0.2],
-      [8, 3, 0.3],
-      [8, 4, 0.4],
-      [8, 5, 0.5],
-      [8, 6, 0.6],
-      [8, 7, 0.8],
-      [8, 8, 1],
-    ];
     this.initData();
     // this.myEcharts()
   },
@@ -113,12 +56,6 @@ export default {
       })
         .then((res) => {
           if (res.status === 200) {
-            // 数据库的数据是 100*100的数组
-            // 后端传来的数据应该是 n*n 的相似度数组
-            // [  "1_1",  "2_4",  "3_3",  "4_6",  "4_11",  "5_4",  "6_3",  "7_2"];
-            // 找到 ["1_1","2_4"],[ "1_1","3_3"]...对应的相似度数组
-            //
-            // 接收到的数据应该是[]
             this.similarityArrs = res.data["subSimilarity"];
             this.myEcharts();
           }
@@ -134,7 +71,7 @@ export default {
           position: "top",
         },
         grid: {
-          height: "80%",
+          height: "70%",
           top: "5%",
         },
         xAxis: {
@@ -151,13 +88,43 @@ export default {
             show: true,
           },
         },
+        dataZoom: [
+          {
+            type: "inside",
+            xAxisIndex: 0,
+            start: 0,
+            end: 30,
+            filterMode: "filter",
+          },
+          {
+            type: "slider",
+            xAxisIndex: 0,
+            start: 0,
+            end: 30,
+            filterMode: "filter",
+          },
+          {
+            type: "inside",
+            yAxisIndex: 0,
+            start: 0,
+            end: 30,
+            filterMode: "filter",
+          },
+          {
+            type: "slider",
+            yAxisIndex: 0,
+            start: 0,
+            end: 30,
+            filterMode: "filter",
+          },
+        ],
         visualMap: {
           min: 0,
           max: 1,
           calculable: true,
           orient: "vertical",
           top: "10%",
-          right: "2%",
+          right: "5%",
           text: ["High", "Low"],
           precision: 2,
         },
@@ -167,7 +134,7 @@ export default {
             type: "heatmap",
             data: this.similarityArrs,
             label: {
-              show: true,
+              show: false,
             },
             emphasis: {
               itemStyle: {

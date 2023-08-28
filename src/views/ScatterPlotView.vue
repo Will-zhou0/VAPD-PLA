@@ -538,10 +538,6 @@ export default {
 };
 </script>
 <style lang="less">
-//svg {
-//  border: 1px solid black;
-//}
-
 /* 中间力导向图 */
 .center_center {
   position: relative;
@@ -590,14 +586,14 @@ circle {
 
 .sub_center_center {
   z-index: 1;
-  /*  */
-  /*border: 1px solid black;*/
+  border: 1px solid black;
   position: absolute;
-  right: 4px;
+  top: -3px;
+  right: -3px;
   width: 174px;
   height: 100px;
-  margin-top: 10px;
-  margin-right: 12px;
+  // margin-top: 10px;
+  // margin-right: 12px;
   //background-color: white;
   opacity: 1;
 }

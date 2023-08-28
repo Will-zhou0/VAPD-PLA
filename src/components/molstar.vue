@@ -76,8 +76,10 @@ export default {
 <style scoped>
 .molstar {
   float: left;
-  width: 330px;
-  height: 320px;
+  position: relative;
+  left: 13%;
+  width: 355px;
+  height: 355px;
   position: relative;
 }
 </style>

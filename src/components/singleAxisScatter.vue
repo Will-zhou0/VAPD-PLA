@@ -1,10 +1,10 @@
 <template>
   <el-card class="bottom_right">
     <div slot="header" class="card_header">
-      <span>单轴散点图</span>
+      <span>Scatter on Single Axis</span>
       <el-dropdown :hide-on-click="false" style="float: right">
         <span class="el-dropdown-link">
-          添加其他属性<i class="el-icon-arrow-down el-icon--right"></i>
+          Other Attributes<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
@@ -53,6 +53,7 @@
 
 <script>
 import * as echarts from "echarts";
+import { request } from "@/network/request";
 export default {
   name: "SingleAxisScattert",
   data() {
@@ -66,7 +67,20 @@ export default {
         maxDis: false,
       },
       // 需要获取属性的相关口袋
-      pocketData: ["1_1", "2_4", "3_3", "4_6", "4_11", "5_4", "6_3"],
+      pocketData: [
+        "20_1",
+        "86_1",
+        "13_9",
+        "21_4",
+        "37_6",
+        "1_1",
+        "2_4",
+        "3_3",
+        "4_6",
+        "4_11",
+        "5_4",
+        "6_3",
+      ],
       attrValueData: {
         volume: [
           [0, 5],
@@ -135,14 +149,13 @@ export default {
           [23, 5],
         ],
       }, // 返回的属性列表
-      attrNameList: ["volume", "polarSasa"], // 返回的属性值数据
+      attrNameList: ["Volume", "Polar SASA"], // 返回的属性值数据
       singleAxisChart: null, // 单轴图表
     };
   },
   mounted() {
-    // this.initData();
-
-    this.myCharts();
+    this.initData();
+    // this.myCharts();
   },
   methods: {
     async initData() {
@@ -153,8 +166,10 @@ export default {
       })
         .then((res) => {
           if (res.status === 200) {
-            this.attrValueData = res.data["attr"];
-            this.myEcharts();
+            // console.log(res);
+            this.attrValueData = res.data["singleAxisData"];
+            console.log("单轴散点图", this.attrValueData);
+            this.myCharts();
           }
         })
         .catch((err) => {
@@ -198,7 +213,11 @@ export default {
           type: "scatter",
           data: [],
           symbolSize: function (dataItem) {
-            return dataItem[1] * 4;
+            return dataItem[3] * 60;
+          },
+          emphasis: {
+            focus: "series",
+            blurScope: "global",
           },
         });
       });
@@ -208,18 +227,19 @@ export default {
       const option = {
         tooltip: {
           position: "top",
+          valueFormatter: (value) => value[1] + ": " + value[2],
         },
         dataZoom: [
           {
             type: "inside",
-            singleAxisIndex: [0,1,2,3,4,5,6],
+            singleAxisIndex: [0, 1, 2, 3, 4, 5, 6],
             start: 0,
             end: 20,
             minValueSpan: 10,
           },
           {
             type: "slider",
-            singleAxisIndex: [0,1,2,3,4,5,6],
+            singleAxisIndex: [0, 1, 2, 3, 4, 5, 6],
             start: 0,
             end: 20,
             minValueSpan: 10,
@@ -242,11 +262,11 @@ export default {
     changeVolume() {
       if (this.checked.volume == true) {
         console.log("addVolume");
-        this.attrNameList.push("volume");
+        this.attrNameList.push("Volume");
         this.myCharts();
       } else {
         console.log("removeVolume");
-        this.attrNameList.splice(this.attrNameList.indexOf("volume"), 1);
+        this.attrNameList.splice(this.attrNameList.indexOf("Volume"), 1);
         this.singleAxisChart.setOption({});
         this.myCharts();
       }
@@ -254,34 +274,34 @@ export default {
     changePolarSasa() {
       if (this.checked.polarSasa == true) {
         console.log("addPolarSasa");
-        this.attrNameList.push("polarSasa");
+        this.attrNameList.push("Polar SASA");
         this.myCharts();
       } else {
         console.log("removePolarSasa");
-        this.attrNameList.splice(this.attrNameList.indexOf("polarSasa"), 1);
+        this.attrNameList.splice(this.attrNameList.indexOf("Polar SASA"), 1);
         this.myCharts();
       }
     },
     changeApolarSasa() {
       if (this.checked.apolarSasa == true) {
         console.log("addApolarSasa");
-        this.attrNameList.push("apolarSasa");
+        this.attrNameList.push("Apolar SASA");
         this.myCharts();
       } else {
         console.log("removeApolarSasa");
-        this.attrNameList.splice(this.attrNameList.indexOf("apolarSasa"), 1);
+        this.attrNameList.splice(this.attrNameList.indexOf("Apolar SASA"), 1);
         this.myCharts();
       }
     },
     changeHydrophobicDens() {
       if (this.checked.hydrophobicDens == true) {
         console.log("addHydrophobicDens");
-        this.attrNameList.push("hydrophobicDens");
+        this.attrNameList.push("Mean local hydrophobic density");
         this.myCharts();
       } else {
         console.log("removeHydrophobicDens");
         this.attrNameList.splice(
-          this.attrNameList.indexOf("hydrophobicDens"),
+          this.attrNameList.indexOf("Mean local hydrophobic density"),
           1
         );
         this.myCharts();
@@ -290,22 +310,28 @@ export default {
     changeAlpSpDens() {
       if (this.checked.alpSpDens == true) {
         console.log("addAlpSpDens");
-        this.attrNameList.push("alpSpDens");
+        this.attrNameList.push("Alpha sphere density");
         this.myCharts();
       } else {
         console.log("removeAlpSpDens");
-        this.attrNameList.splice(this.attrNameList.indexOf("alpSpDens"), 1);
+        this.attrNameList.splice(
+          this.attrNameList.indexOf("Alpha sphere density"),
+          1
+        );
         this.myCharts();
       }
     },
     changeMaxDis() {
       if (this.checked.maxDis == true) {
         console.log("addMaxDis");
-        this.attrNameList.push("maxDis");
+        this.attrNameList.push("Cent. of mass - Alpha Sphere max dist");
         this.myCharts();
       } else {
         console.log("removeMaxDis");
-        this.attrNameList.splice(this.attrNameList.indexOf("maxDis"), 1);
+        this.attrNameList.splice(
+          this.attrNameList.indexOf("Cent. of mass - Alpha Sphere max dist"),
+          1
+        );
         this.myCharts();
       }
     },

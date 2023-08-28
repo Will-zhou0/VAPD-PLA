@@ -9,7 +9,7 @@
       <div>
         <el-row :gutter="5" class="con_top">
           <el-col :span="4">
-            <el-card shadow="hover">
+            <el-card shadow="hover" class="annotation">
               <div>
                 <h4>Protein Annotations</h4>
                 &nbsp;&nbsp;PDB ENTY：<input
@@ -36,7 +36,7 @@
           <el-col :span="12">
             <el-card shadow="hover">
               <div slot="header" class="card_header">
-                <span>卡片名称</span>
+                <span>Heat Map</span>
               </div>
               <heatmap />
             </el-card>
@@ -44,7 +44,7 @@
           <el-col :span="8">
             <el-card shadow="hover">
               <div slot="header" class="card_header">
-                <span>卡片名称</span>
+                <span>Protein three-dimensional structure view</span>
               </div>
               <molstar ref="molPlot" />
             </el-card>
@@ -56,7 +56,7 @@
           <el-col :span="4">
             <el-card shadow="hover" class="center_left">
               <div slot="header" class="card_header">
-                <span>和弦图</span>
+                <span>Chord Diagram</span>
               </div>
               <div class="card_content">
                 <!-- 遍历指定数量的图 -->
@@ -87,7 +87,7 @@
           <el-col :span="12">
             <el-card shadow="hover" class="center_scatter">
               <div slot="header" class="card_header">
-                <span>卡片名称</span>
+                <span>Scatter Plot</span>
               </div>
               <scatterPlotView
                 @scatterShowMol="scatterShowMol"
@@ -99,7 +99,7 @@
           <el-col :span="8">
             <el-card shadow="hover" class="center_right">
               <div slot="header" class="card_header">
-                <span>卡片名称</span>
+                <span>Histogram of Volume</span>
               </div>
               <div class="card_content">
                 <barPlot
@@ -123,7 +123,7 @@
           <el-col :span="12">
             <el-card>
               <div slot="header" class="card_header">
-                <span>卡片名称</span>
+                <span>Parallel Coordinate Plot</span>
               </div>
               <parallelPlotView
                 @parallelScatterLinkLine="scatterLinkLine"
@@ -133,7 +133,7 @@
             </el-card>
             <el-card>
               <div slot="header" class="card_header">
-                <span>卡片名称</span>
+                <span>Box Plot</span>
               </div>
               <boxPlotView />
             </el-card>
@@ -364,9 +364,9 @@ export default {
 };
 </script>
 <style lang="less">
-svg {
-  border: 1px solid rgba(31, 31, 31, 0.99);
-}
+// svg {
+//   border: 1px solid rgba(31, 31, 31, 0.99);
+// }
 
 * {
   margin: 0;
@@ -375,6 +375,10 @@ svg {
   width: 100%;
   height: 100%;
   overflow: auto;
+}
+.annotation {
+  width: 100%;
+  height: 416px;
 }
 header {
   text-align: center;
@@ -412,10 +416,12 @@ header {
     .card_content {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
-      height: 450px;
-      overflow: auto;
+      height: 480px;
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
       .center_left_child {
         width: 210px;
         height: 200px;
@@ -439,10 +445,12 @@ header {
     .card_content {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
-      height: 450px;
+      width: 100%;
+      height: 480px;
       overflow: auto;
+      overflow-x: hidden;
     }
   }
 }
